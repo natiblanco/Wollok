@@ -1,49 +1,73 @@
-object colectivo {
-  var pasajeros = 0
-  const capacidad = 35
-  var combustible = 50
-  const consumo = 1
-
-  method recargar() {
-    combustible = 50
-  }
-  method consumoActual() {
-    return consumo + 0.1 * pasajeros
-  }
-  method avanzar(sigParada) {
-    if (sigParada.ultimaParada()) {
-      return self.terminal()
-    }
-    
-    if (combustible >= self.consumoActual()) {
-      combustible -= self.consumoActual()
-      const nuevos = sigParada.suben()
-      if (pasajeros + nuevos <= capacidad) {
-        pasajeros += nuevos
-        return "Cantidad de pasajeros: " + pasajeros
-      }
-      return "Alcanzó la máxima capacidad"
-    }
-    return "No hay suficiente combustible" //no muestra este resultado
-  }
-  method terminal() {
-    pasajeros = 0
-    self.recargar()
-    return "Última parada. Pasajeros bajan. Combustible recargado."
-  }
-    method estado() {
-    return "Pasajeros: " + pasajeros + ", Combustible: " + combustible
-  }
-}
-
 class Parada {
-  var property suben = 0
-  var property ultimaParada = true
+ var property nombre = ""
+ var property suben = 0
+ }
+object colectivo {
+ var pasajeros = 0
+ const capacidad = 35
+ var combustible = 20
+ const consumo = 1
+ var property ida = true
+ var property paradaActual = 0
+ var property paradas = []
+
+method consumoActual() {
+ return consumo + 0.1 * pasajeros
+ }
+method recargar() {
+ combustible = 20
+ }
+ 
+method avanzar() {
+ if (paradaActual < 0 || paradaActual >= paradas.size()) {
+ return "Error: No existe la parada."
+ }
+const parada = paradas.get(paradaActual)
+
+if (paradaActual == paradas.size() - 1) {
+  pasajeros = 0
+  self.recargar()
+  ida = !ida
+  console.println ("Terminal en " + parada.nombre() + ". Pasajeros bajan. Combustible recargado.")
 }
 
-const parada1 = new Parada(suben = 10, ultimaParada = false)
-const parada2 = new Parada(suben = 4, ultimaParada = false)
-const parada3 = new Parada(suben = 8, ultimaParada = false)
-const parada4 = new Parada(suben = 3, ultimaParada = false)
-const parada5 = new Parada(suben = 7, ultimaParada = false)
-const parada6 = new Parada(suben = 5)
+if (combustible < self.consumoActual()) {
+  return "No hay suficiente combustible."
+}
+
+combustible -= self.consumoActual()
+
+const nuevos = parada.suben()
+if (pasajeros + nuevos <= capacidad) {
+    pasajeros += nuevos
+}
+
+if (ida) {
+  paradaActual += 1
+} else {
+  paradaActual -= 1
+}
+
+return "Avanzando a parada " + parada.nombre() +
+       ". Suben: " + nuevos +
+       ". Pasajeros: " + pasajeros +
+       ". Combustible: " + combustible
+
+}
+method estado() {
+ return "Pasajeros: " + pasajeros + ", Combustible: " + combustible + ", Parada actual: " + paradaActual
+ }
+ }
+object sistema {
+ method iniciar() {
+ colectivo.paradas([
+ new Parada(nombre = "Parada 0", suben = 5),
+ new Parada(nombre = "Parada 1", suben = 4),
+ new Parada(nombre = "Parada 2", suben = 6),
+ new Parada(nombre = "Parada 3", suben = 3),
+ new Parada(nombre = "Parada 4", suben = 2),
+ new Parada(nombre = "Parada 5", suben = 3)
+ ])
+ colectivo.paradaActual(0)
+ }
+ }
