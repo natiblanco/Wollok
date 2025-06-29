@@ -1,10 +1,11 @@
 class Parada {
  var property nombre = ""
  var property suben = 0
+ var property pendientes = 0
  }
 object colectivo {
  var pasajeros = 0
- const capacidad = 35
+ const capacidad = 30
  var combustible = 20
  const consumo = 1
  var property ida = true
@@ -34,12 +35,29 @@ if (paradaActual == paradas.size() - 1) {
 if (combustible < self.consumoActual()) {
   return "No hay suficiente combustible."
 }
-
 combustible -= self.consumoActual()
 
 const nuevos = parada.suben()
-if (pasajeros + nuevos <= capacidad) {
-    pasajeros += nuevos
+const pendientes = parada.pendientes()
+
+if (ida) {
+    const espacio = capacidad - pasajeros
+    if (nuevos <= espacio) {
+      pasajeros += nuevos
+      parada.pendientes(0)
+    } else {
+      pasajeros += espacio
+      parada.pendientes(nuevos - espacio)
+    }
+} else {
+  const espacio = capacidad - pasajeros
+  if (pendientes <= espacio) {
+    pasajeros += pendientes
+    parada.pendientes(0)
+  } else {
+    pasajeros += espacio
+    parada.pendientes(pendientes - espacio)
+  }
 }
 
 if (ida) {
@@ -47,10 +65,16 @@ if (ida) {
 } else {
   paradaActual -= 1
 }
-
+var mostrarSuben = ""
+if (ida) {
+  mostrarSuben = nuevos
+} else {
+  mostrarSuben = pendientes
+}
 return "Avanzando a parada " + parada.nombre() +
-       ". Suben: " + nuevos +
+       ". Suben: " + mostrarSuben +
        ". Pasajeros: " + pasajeros +
+       ". Pendientes: " + parada.pendientes() +
        ". Combustible: " + combustible
 
 }
@@ -61,12 +85,12 @@ method estado() {
 object sistema {
  method iniciar() {
  colectivo.paradas([
- new Parada(nombre = "Parada 0", suben = 5),
- new Parada(nombre = "Parada 1", suben = 4),
- new Parada(nombre = "Parada 2", suben = 6),
- new Parada(nombre = "Parada 3", suben = 3),
- new Parada(nombre = "Parada 4", suben = 2),
- new Parada(nombre = "Parada 5", suben = 3)
+ new Parada(nombre = "Parada 0", suben = 10),
+ new Parada(nombre = "Parada 1", suben = 9),
+ new Parada(nombre = "Parada 2", suben = 7),
+ new Parada(nombre = "Parada 3", suben = 5),
+ new Parada(nombre = "Parada 4", suben = 12),
+ new Parada(nombre = "Parada 5", suben = 8)
  ])
  colectivo.paradaActual(0)
  }
