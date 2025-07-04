@@ -1,0 +1,51 @@
+import triangulo.*
+
+describe "Test de triángulos" {
+  test "Triángulo inválido" {
+    const t = new Triangulo (lado1 = 1, lado2 = 1, lado3 = 2)
+    assert.notThat(t.esValido())
+    assert.notThat(t.esEquilatero())
+    assert.notThat(t.esEscaleno())
+    assert.notThat(t.esIsosceles())
+  }
+
+  test "Valores fuera de rango" {
+    const t = new Triangulo (lado1 = -2, lado2 = -2, lado3 = -1)
+    assert.notThat(t.esValido())
+    assert.notThat(t.esEquilatero())
+    assert.notThat(t.esEscaleno())
+    assert.notThat(t.esIsosceles())
+  }
+
+  test "Triángulo inexistente" {
+    const t = new Triangulo (lado1 = 0, lado2 = 0, lado3 = 0)
+    assert.notThat(t.esValido())
+    assert.notThat(t.esEquilatero())
+    assert.notThat(t.esEscaleno())
+    assert.notThat(t.esIsosceles())
+  }
+
+  test "Triángulo equilatero" {
+    const t = new Triangulo (lado1 = 5, lado2 = 5, lado3 = 5)
+    assert.that(t.esValido())
+    assert.that(t.esEquilatero())
+    assert.notThat(t.esEscaleno())
+    assert.that(t.esIsosceles()) 
+  }
+
+  test "Triángulo escaleno" {
+    const t = new Triangulo (lado1 = 4, lado2 = 5, lado3 = 6)
+    assert.that(t.esValido())
+    assert.that(t.esEscaleno())
+    assert.notThat(t.esEquilatero())
+    assert.notThat(t.esIsosceles())
+  }
+
+  test "Triángulo isosceles" {
+    const t = new Triangulo (lado1 = 4, lado2 = 4, lado3 = 6)
+    assert.that(t.esValido())
+    assert.that(t.esIsosceles())
+    assert.notThat(t.esEscaleno())
+    assert.notThat(t.esEquilatero())
+  }
+}

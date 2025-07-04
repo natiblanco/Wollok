@@ -1,0 +1,12 @@
+import colectivo.*
+
+describe "Pruebas del colectivo" {
+
+  method initialize() {
+    sistema.iniciar()
+  }
+  test "Inicio" {
+    assert.equals(0, colectivo.pasajeros())
+    assert.equals(20, colectivo.combustible())
+  }
+}
