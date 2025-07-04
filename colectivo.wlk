@@ -57,12 +57,12 @@ if (combustible < self.consumoActual(subenAhora)) {
 
 combustible -= self.consumoActual(subenAhora)
 
-if (paradaActual == paradas.size() - 1) {
+if ((paradaActual == paradas.size() - 1 && ida) || (paradaActual == 0 && !ida)) {
   pasajeros = 0
   self.recargar()
   ida = !ida
-  console.println ("Terminal en " + parada.nombre() + ". Pasajeros bajan. Combustible recargado.")
-}
+  console.println("Terminal en " + parada.nombre() + ". Pasajeros bajan. Combustible recargado.")
+  }
 
 if (ida) {
   paradaActual += 1
