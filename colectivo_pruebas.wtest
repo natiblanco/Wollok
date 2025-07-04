@@ -1,13 +1,11 @@
 import colectivo.*
 
 describe "Pruebas del colectivo" {
-
   test "Inicio" {
     sistema.iniciar()
     assert.equals(0, bondi.pasajeros())
     assert.equals(30, bondi.combustible())
   }
-  
   test "Colectivo avanza" {
     sistema.iniciar()
     bondi.avanzar()
@@ -15,21 +13,24 @@ describe "Pruebas del colectivo" {
     assert.equals(30 - (1 + 0.1 * 10), bondi.combustible())
     assert.equals(1, bondi.paradaActual())
   }
-
   test "Cambio de sentido" {
     sistema.iniciar()
-    bondi.paradaActual(5)
+    bondi.paradaActual(7)
     bondi.avanzar()
     assert.equals(0, bondi.pasajeros())
     assert.equals(30, bondi.combustible())
     assert.notThat(bondi.ida())
   }
-
   test "No hay combustible" {
     sistema.iniciar()
     bondi.combustible(0)
     assert.equals("No hay suficiente combustible.", bondi.avanzar())
   }
-
-
+  test "Capacidad máxima" {
+    sistema.iniciar()
+    bondi.pasajeros(29)
+    bondi.avanzar()
+    assert.equals(30, bondi.pasajeros())
+    assert.equals(9, bondi.paradas().get(0).pendientes())
+  }
 }
