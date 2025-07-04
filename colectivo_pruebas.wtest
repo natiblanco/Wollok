@@ -2,11 +2,34 @@ import colectivo.*
 
 describe "Pruebas del colectivo" {
 
-  method initialize() {
-    sistema.iniciar()
-  }
   test "Inicio" {
-    assert.equals(0, colectivo.pasajeros())
-    assert.equals(20, colectivo.combustible())
+    sistema.iniciar()
+    assert.equals(0, bondi.pasajeros())
+    assert.equals(30, bondi.combustible())
   }
+  
+  test "Colectivo avanza" {
+    sistema.iniciar()
+    bondi.avanzar()
+    assert.equals(10, bondi.pasajeros())
+    assert.equals(30 - (1 + 0.1 * 10), bondi.combustible())
+    assert.equals(1, bondi.paradaActual())
+  }
+
+  test "Cambio de sentido" {
+    sistema.iniciar()
+    bondi.paradaActual(5)
+    bondi.avanzar()
+    assert.equals(0, bondi.pasajeros())
+    assert.equals(30, bondi.combustible())
+    assert.notThat(bondi.ida())
+  }
+
+  test "No hay combustible" {
+    sistema.iniciar()
+    bondi.combustible(0)
+    assert.equals("No hay suficiente combustible.", bondi.avanzar())
+  }
+
+
 }
