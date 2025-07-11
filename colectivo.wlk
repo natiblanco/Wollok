@@ -70,14 +70,8 @@ if (ida) {
   paradaActual -= 1
 }
 
-var mostrarSuben = ""
-if (ida) {
-  mostrarSuben = nuevos
-} else {
-  mostrarSuben = pendientes
-}
 return "Avanzando a parada " + parada.nombre() +
-       ". Suben: " + mostrarSuben +
+       ". Suben: " + subenAhora +
        ". Pasajeros: " + pasajeros +
        ". Pendientes: " + parada.pendientes() +
        ". Combustible: " + combustible

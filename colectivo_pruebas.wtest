@@ -1,8 +1,11 @@
 import colectivo.*
 
 describe "Pruebas del colectivo" {
-  test "Inicio" {
+  method initialize() {
     sistema.iniciar()
+  }
+  test "Inicio" {
+    self.initialize()
     assert.equals(0, bondi.pasajeros())
     assert.equals(30, bondi.combustible())
   }
